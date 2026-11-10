@@ -22,7 +22,7 @@ On the phone: open the URL in Chrome → ⋮ → "Add to Home screen".
   - `"kind": "phrases"` units (the first five: introductions, classroom instructions, asking for help, friends at recess, lunch) are for getting by at a US school. Each item is a short phrase (`en`, `he`, `emoji`).
   - Word units (colors, animals, food) hold single words plus `sentences` for the word bank.
   - Hebrew uses feminine forms for "I" (אני צריכה, אני לא מבינה).
-- `content/reading/*.json`: the **📖 קוראים** (reading) track, a separate path with its own progress:
+- `content/reading/*.json`: the **📖 reading** track. On the home screen its units are interleaved with the 🗣️ speaking units in one path, but each track unlocks on its own, so a slow reading unit never blocks the school phrases. The main button alternates lessons 1:1 (speaking, reading, speaking…); tapping a unit starts that track directly.
   - Letter units (`"kind": "letters"`): each letter has a Hebrew sound equivalent (b = בּ, sh = ש), a keyword she knows orally (b → ball ⚽) and example pictures. Vowels (`"vowel": true`) have no clean Hebrew equivalent, so they're taught only through keywords. `"confusable"` keeps c/k (same sound) and p/f (פּ/פ look alike) from being offered against each other.
   - Decodable word units (`"kind": "decodable"`): short a/i/o/u/e words (cat, pig, dog, sun, bed), then sh/ch/th and magic e.
   - The phone's TTS can't say isolated sounds reliably, so sounds are taught through Hebrew letters and keywords, never by playing "/b/".

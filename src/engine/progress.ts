@@ -1,4 +1,4 @@
-import type { ExerciseKind, Skill } from './types';
+import type { ExerciseKind, Skill, Track } from './types';
 
 /** Leitner-style memory state for one item or sentence. Box 0 = shaky, 5 = solid. */
 export interface ItemState {
@@ -28,6 +28,7 @@ export interface LessonRecord {
   xp: number;
   accuracy: number;
   test?: boolean;
+  track?: Track;
 }
 
 export interface Progress {
@@ -87,6 +88,7 @@ function previousDay(ts: number): string {
 }
 
 export interface LessonResult {
+  track?: Track;
   startedAt: number;
   firstTryCorrect: number;
   total: number;
@@ -113,7 +115,10 @@ export function finishLesson(p: Progress, r: LessonResult, now: number, test = f
     gems: p.gems + gems,
     streak,
     lastActiveDay: today,
-    lessons: [...p.lessons, { startedAt: r.startedAt, finishedAt: now, xp, accuracy, ...(test ? { test } : {}) }],
+    lessons: [
+      ...p.lessons,
+      { startedAt: r.startedAt, finishedAt: now, xp, accuracy, ...(test ? { test } : {}), ...(r.track ? { track: r.track } : {}) },
+    ],
   };
 }
 
@@ -121,6 +126,12 @@ export function finishLesson(p: Progress, r: LessonResult, now: number, test = f
 export function currentStreak(p: Progress, now: number): number {
   if (!p.lastActiveDay) return 0;
   return p.lastActiveDay === dayKey(now) || p.lastActiveDay === previousDay(now) ? p.streak : 0;
+}
+
+/** Lessons alternate 1:1 between speaking and reading: the next one is the other track. */
+export function nextTrack(p: Progress): Track {
+  const last = [...p.lessons].reverse().find((l) => !l.test && l.track);
+  return last?.track === 'talk' ? 'read' : 'talk';
 }
 
 export function lessonsToday(p: Progress, now: number): number {

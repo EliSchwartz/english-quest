@@ -314,3 +314,26 @@ describe('no look-alike options', () => {
     }
   });
 });
+
+describe('track alternation', () => {
+  it('starts with speaking, then alternates 1:1, ignoring jump tests', async () => {
+    const { nextTrack } = await import('./progress');
+    let p = emptyProgress();
+    expect(nextTrack(p)).toBe('talk');
+    p = finishLesson(p, { track: 'talk', startedAt: NOW, firstTryCorrect: 5, total: 5 }, NOW);
+    expect(nextTrack(p)).toBe('read');
+    p = finishLesson(p, { track: 'talk', startedAt: NOW, firstTryCorrect: 5, total: 5 }, NOW, true);
+    expect(nextTrack(p)).toBe('read');
+    p = finishLesson(p, { track: 'read', startedAt: NOW, firstTryCorrect: 5, total: 5 }, NOW);
+    expect(nextTrack(p)).toBe('talk');
+  });
+  it('pacing looks only at lessons of the same track', () => {
+    const p = emptyProgress();
+    p.lessons = [
+      { startedAt: 0, finishedAt: 0, xp: 0, accuracy: 0.5, track: 'read' },
+      { startedAt: 0, finishedAt: 0, xp: 0, accuracy: 1, track: 'talk' },
+    ];
+    expect(newWordCount(p, 'talk')).toBe(4);
+    expect(newWordCount(p, 'read')).toBe(2);
+  });
+});

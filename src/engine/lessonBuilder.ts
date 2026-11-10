@@ -66,8 +66,8 @@ export function currentUnit(statuses: UnitStatus[]): UnitStatus {
 }
 
 /** How many new items to introduce, based on accuracy in the last few (non-test) lessons. */
-export function newWordCount(p: Progress): number {
-  const recent = p.lessons.filter((l) => !l.test).slice(-3);
+export function newWordCount(p: Progress, track?: Unit['track']): number {
+  const recent = p.lessons.filter((l) => !l.test && (!track || !l.track || l.track === track)).slice(-3);
   if (recent.length === 0) return 3;
   const acc = recent.reduce((a, l) => a + l.accuracy, 0) / recent.length;
   if (acc < 0.7) return 2;
@@ -212,7 +212,7 @@ export function buildLesson(units: Unit[], p: Progress, now: number, rng: Rng = 
   const f = new Factory(units, pool, rng);
 
   // 1. New items from the current unit: an intro, then a second exposure later on.
-  const newItems = cur.items.filter((i) => !p.items[i.id]).slice(0, newWordCount(p));
+  const newItems = cur.items.filter((i) => !p.items[i.id]).slice(0, newWordCount(p, cur.track));
   const INTRO: Record<Item['type'], ChoiceKind> = { word: 'pick-picture', phrase: 'en-to-he', letter: 'letter-sound', decodable: 'read-pick' };
   const SECOND: Record<Item['type'], ChoiceKind> = { word: 'listen-picture', phrase: 'listen-meaning', letter: 'hear-letter', decodable: 'listen-word' };
   const intros = newItems.map((i) => f.choice(i, INTRO[i.type], true));

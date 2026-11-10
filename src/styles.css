@@ -245,10 +245,6 @@ button:disabled { cursor: default; }
 .done-sub { margin: 0; color: var(--muted); font-size: 1.15rem; }
 @keyframes fade { from { opacity: 0; } }
 
-/* ---------- Tracks ---------- */
-.tracks { display: flex; gap: 8px; margin-top: 14px; padding: 4px; background: #f2f2f2; border-radius: 16px; }
-.track { flex: 1; border: none; border-radius: 12px; padding: 10px; font-weight: 800; font-size: 1.05rem; background: none; color: var(--muted); }
-.track.on { background: #fff; color: var(--ink); box-shadow: 0 2px 0 var(--line); }
 
 /* ---------- Reading ---------- */
 .letter-card { flex-direction: column; gap: 6px; }
@@ -263,3 +259,11 @@ button:disabled { cursor: default; }
 .answer-line.spelling, .bank.spelling { justify-content: center; }
 .answer-line.spelling { gap: 4px; }
 .answer-line.spelling .tile, .bank.spelling .tile { font-size: 1.8rem; min-width: 52px; padding: 8px 10px; font-weight: 800; }
+
+/* ---------- Single path ---------- */
+.node.track-read::before { background: var(--blue); box-shadow: 0 6px 0 var(--blue-dark); }
+.node.track-read { --ring: var(--blue); }
+.node.complete.track-read::before { background: var(--yellow); box-shadow: 0 6px 0 #e0a800; }
+.node.locked.track-read::before { background: var(--line); box-shadow: 0 6px 0 #cfcfcf; }
+.node-track { font-size: 0.95rem; }
+.next-track { display: block; font-size: 0.95rem; font-weight: 600; opacity: 0.9; margin-top: 2px; }
