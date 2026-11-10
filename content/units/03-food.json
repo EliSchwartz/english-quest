@@ -1,0 +1,25 @@
+{
+  "id": "food",
+  "title": "אוכל",
+  "emoji": "🍎",
+  "items": [
+    { "id": "apple", "en": "apple", "he": "תפוח", "emoji": "🍎" },
+    { "id": "banana", "en": "banana", "he": "בננה", "emoji": "🍌" },
+    { "id": "bread", "en": "bread", "he": "לחם", "emoji": "🍞" },
+    { "id": "milk", "en": "milk", "he": "חלב", "emoji": "🥛" },
+    { "id": "egg", "en": "egg", "he": "ביצה", "emoji": "🥚" },
+    { "id": "cheese", "en": "cheese", "he": "גבינה", "emoji": "🧀" },
+    { "id": "water", "en": "water", "he": "מים", "emoji": "💧" },
+    { "id": "pizza", "en": "pizza", "he": "פיצה", "emoji": "🍕" },
+    { "id": "cake", "en": "cake", "he": "עוגה", "emoji": "🍰" },
+    { "id": "carrot", "en": "carrot", "he": "גזר", "emoji": "🥕" },
+    { "id": "ice-cream", "en": "ice cream", "he": "גלידה", "emoji": "🍦" },
+    { "id": "grapes", "en": "grapes", "he": "ענבים", "emoji": "🍇" }
+  ],
+  "sentences": [
+    { "id": "s-like-pizza", "en": "I like pizza", "he": "אני אוהבת פיצה", "emoji": "🍕", "distractors": ["cake", "eat"] },
+    { "id": "s-eat-apple", "en": "I eat an apple", "he": "אני אוכלת תפוח", "emoji": "🍎", "distractors": ["drink", "banana"] },
+    { "id": "s-drink-milk", "en": "I drink milk", "he": "אני שותה חלב", "emoji": "🥛", "distractors": ["eat", "water"] },
+    { "id": "s-banana-yellow", "en": "The banana is yellow", "he": "הבננה צהובה", "emoji": "🍌", "distractors": ["red", "apple"] }
+  ]
+}

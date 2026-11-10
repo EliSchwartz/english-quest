@@ -1,0 +1,25 @@
+{
+  "id": "animals",
+  "title": "חיות",
+  "emoji": "🐾",
+  "items": [
+    { "id": "dog", "en": "dog", "he": "כלב", "emoji": "🐕" },
+    { "id": "cat", "en": "cat", "he": "חתול", "emoji": "🐈" },
+    { "id": "bird", "en": "bird", "he": "ציפור", "emoji": "🐦" },
+    { "id": "fish", "en": "fish", "he": "דג", "emoji": "🐟" },
+    { "id": "horse", "en": "horse", "he": "סוס", "emoji": "🐴" },
+    { "id": "cow", "en": "cow", "he": "פרה", "emoji": "🐄" },
+    { "id": "lion", "en": "lion", "he": "אריה", "emoji": "🦁" },
+    { "id": "monkey", "en": "monkey", "he": "קוף", "emoji": "🐒" },
+    { "id": "elephant", "en": "elephant", "he": "פיל", "emoji": "🐘" },
+    { "id": "rabbit", "en": "rabbit", "he": "ארנב", "emoji": "🐰" },
+    { "id": "frog", "en": "frog", "he": "צפרדע", "emoji": "🐸" },
+    { "id": "bear", "en": "bear", "he": "דוב", "emoji": "🐻" }
+  ],
+  "sentences": [
+    { "id": "s-have-dog", "en": "I have a dog", "he": "יש לי כלב", "emoji": "🐕", "distractors": ["cat", "is"] },
+    { "id": "s-cat-black", "en": "The cat is black", "he": "החתול שחור", "emoji": "🐈‍⬛", "distractors": ["dog", "white"] },
+    { "id": "s-see-lion", "en": "I see a big lion", "he": "אני רואה אריה גדול", "emoji": "🦁", "distractors": ["small", "bear"] },
+    { "id": "s-frog-green", "en": "The frog is green", "he": "הצפרדע ירוקה", "emoji": "🐸", "distractors": ["fish", "blue"] }
+  ]
+}

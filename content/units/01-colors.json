@@ -1,0 +1,23 @@
+{
+  "id": "colors",
+  "title": "צבעים",
+  "emoji": "🎨",
+  "items": [
+    { "id": "red", "en": "red", "he": "אדום", "emoji": "🔴" },
+    { "id": "blue", "en": "blue", "he": "כחול", "emoji": "🔵" },
+    { "id": "green", "en": "green", "he": "ירוק", "emoji": "🟢" },
+    { "id": "yellow", "en": "yellow", "he": "צהוב", "emoji": "🟡" },
+    { "id": "orange", "en": "orange", "he": "כתום", "emoji": "🟠" },
+    { "id": "purple", "en": "purple", "he": "סגול", "emoji": "🟣" },
+    { "id": "black", "en": "black", "he": "שחור", "emoji": "⚫" },
+    { "id": "white", "en": "white", "he": "לבן", "emoji": "⚪" },
+    { "id": "brown", "en": "brown", "he": "חום", "emoji": "🟤" },
+    { "id": "pink", "en": "pink", "he": "ורוד", "emoji": "🩷" }
+  ],
+  "sentences": [
+    { "id": "s-sky-blue", "en": "The sky is blue", "he": "השמיים כחולים", "emoji": "🌤️", "distractors": ["red", "are"] },
+    { "id": "s-like-red", "en": "I like red", "he": "אני אוהבת אדום", "emoji": "❤️", "distractors": ["you", "blue"] },
+    { "id": "s-grass-green", "en": "The grass is green", "he": "הדשא ירוק", "emoji": "🌱", "distractors": ["yellow", "a"] },
+    { "id": "s-bag-pink", "en": "My bag is pink", "he": "התיק שלי ורוד", "emoji": "🎒", "distractors": ["your", "black"] }
+  ]
+}
