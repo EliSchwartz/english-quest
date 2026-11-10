@@ -53,7 +53,9 @@ export function MatchView({ ex, items, onComplete }: Props) {
               className={cls('w', id, word)}
               disabled={done.has(id)}
               onClick={() => {
-                speak(items.get(id)!.en);
+                const it = items.get(id)!;
+                // Reading practice: don't read decodable words aloud before she matches them.
+                if (it.type !== 'decodable') speak(it.type === 'letter' ? it.keyword ?? it.en : it.en);
                 setWord(id);
                 attempt(id, pic);
               }}

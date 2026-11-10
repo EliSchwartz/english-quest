@@ -1,0 +1,123 @@
+{
+  "id": "letters-1",
+  "kind": "letters",
+  "track": "read",
+  "title": "אותיות: s a t i p n",
+  "emoji": "🔤",
+  "items": [
+    {
+      "id": "l-s",
+      "en": "s",
+      "he": "ס",
+      "emoji": "☀️",
+      "keyword": "sun",
+      "examples": [
+        {
+          "en": "sock",
+          "emoji": "🧦"
+        },
+        {
+          "en": "snake",
+          "emoji": "🐍"
+        },
+        {
+          "en": "six",
+          "emoji": "6️⃣"
+        }
+      ]
+    },
+    {
+      "id": "l-a",
+      "en": "a",
+      "he": "אַ – כמו apple",
+      "emoji": "🍎",
+      "keyword": "apple",
+      "examples": [
+        {
+          "en": "ant",
+          "emoji": "🐜"
+        },
+        {
+          "en": "alligator",
+          "emoji": "🐊"
+        }
+      ],
+      "vowel": true
+    },
+    {
+      "id": "l-t",
+      "en": "t",
+      "he": "ט",
+      "emoji": "🐯",
+      "keyword": "tiger",
+      "examples": [
+        {
+          "en": "ten",
+          "emoji": "🔟"
+        },
+        {
+          "en": "tent",
+          "emoji": "⛺"
+        },
+        {
+          "en": "tomato",
+          "emoji": "🍅"
+        }
+      ]
+    },
+    {
+      "id": "l-i",
+      "en": "i",
+      "he": "אִ – כמו insect",
+      "emoji": "🐛",
+      "keyword": "insect",
+      "examples": [],
+      "vowel": true
+    },
+    {
+      "id": "l-p",
+      "en": "p",
+      "he": "פּ",
+      "emoji": "🐷",
+      "keyword": "pig",
+      "examples": [
+        {
+          "en": "pizza",
+          "emoji": "🍕"
+        },
+        {
+          "en": "penguin",
+          "emoji": "🐧"
+        },
+        {
+          "en": "pen",
+          "emoji": "🖊️"
+        }
+      ],
+      "confusable": [
+        "f"
+      ]
+    },
+    {
+      "id": "l-n",
+      "en": "n",
+      "he": "נ",
+      "emoji": "👃",
+      "keyword": "nose",
+      "examples": [
+        {
+          "en": "nut",
+          "emoji": "🥜"
+        },
+        {
+          "en": "nest",
+          "emoji": "🪺"
+        },
+        {
+          "en": "nine",
+          "emoji": "9️⃣"
+        }
+      ]
+    }
+  ]
+}

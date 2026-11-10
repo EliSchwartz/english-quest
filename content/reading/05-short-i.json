@@ -1,0 +1,51 @@
+{
+  "id": "short-i",
+  "kind": "decodable",
+  "track": "read",
+  "title": "קוראים: pig",
+  "emoji": "🐷",
+  "items": [
+    {
+      "id": "r-pig",
+      "en": "pig",
+      "he": "חזיר",
+      "emoji": "🐷"
+    },
+    {
+      "id": "r-pin",
+      "en": "pin",
+      "he": "נעץ",
+      "emoji": "📌"
+    },
+    {
+      "id": "r-six",
+      "en": "six",
+      "he": "שש",
+      "emoji": "6️⃣"
+    },
+    {
+      "id": "r-lip",
+      "en": "lip",
+      "he": "שפה",
+      "emoji": "👄"
+    },
+    {
+      "id": "r-bin",
+      "en": "bin",
+      "he": "פח",
+      "emoji": "🗑️"
+    },
+    {
+      "id": "r-kid",
+      "en": "kid",
+      "he": "ילד",
+      "emoji": "🧒"
+    },
+    {
+      "id": "r-zip",
+      "en": "zip",
+      "he": "רוכסן",
+      "emoji": "🤐"
+    }
+  ]
+}

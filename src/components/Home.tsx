@@ -1,17 +1,19 @@
 import { useState } from 'react';
 import { unitStatuses, currentUnit } from '../engine/lessonBuilder';
 import { DAILY_GOAL, currentStreak, lessonsToday, type Progress } from '../engine/progress';
-import type { Unit } from '../engine/types';
+import type { Track, Unit } from '../engine/types';
 import { JumpSheet } from './JumpSheet';
 
 interface Props {
   units: Unit[];
+  track: Track;
+  onTrack: (t: Track) => void;
   progress: Progress;
   onStart: () => void;
   onJump: (unitId: string) => void;
 }
 
-export function Home({ units, progress, onStart, onJump }: Props) {
+export function Home({ units, track, onTrack, progress, onStart, onJump }: Props) {
   const [jumpTo, setJumpTo] = useState<Unit | null>(null);
   const now = Date.now();
   const statuses = unitStatuses(units, progress);
@@ -38,7 +40,16 @@ export function Home({ units, progress, onStart, onJump }: Props) {
         </div>
       </section>
 
-      <section className="path">
+      <nav className="tracks" role="tablist">
+        <button role="tab" aria-selected={track === 'talk'} className={`track ${track === 'talk' ? 'on' : ''}`} onClick={() => onTrack('talk')}>
+          🗣️ מדברים
+        </button>
+        <button role="tab" aria-selected={track === 'read'} className={`track ${track === 'read' ? 'on' : ''}`} onClick={() => onTrack('read')}>
+          📖 קוראים
+        </button>
+      </nav>
+
+      <section className="path" key={track}>
         {statuses.map((s, i) => {
           const isCur = s.unit.id === cur.unit.id;
           const state = !s.unlocked ? 'locked' : s.complete && !isCur ? 'complete' : isCur ? 'current' : 'open';
@@ -53,7 +64,7 @@ export function Home({ units, progress, onStart, onJump }: Props) {
                 <span className="node-emoji">{state === 'locked' ? '🔒' : state === 'complete' ? '👑' : s.unit.emoji}</span>
               </button>
               <div className="node-label">
-                {s.unit.title}
+                <bdi>{s.unit.title}</bdi>
                 {s.unlocked && <span className="node-pct"> · {Math.round(s.mastered * 100)}%</span>}
               </div>
               {state === 'locked' && (
@@ -79,7 +90,7 @@ export function Home({ units, progress, onStart, onJump }: Props) {
 
       <footer className="home-footer">
         <button className="btn btn-green wide big" onClick={onStart}>
-          {progress.lessons.length === 0 ? 'יאללה, מתחילים!' : 'לשיעור הבא!'}
+          {statuses.every((s) => s.seen === 0) ? 'יאללה, מתחילים!' : 'לשיעור הבא!'}
         </button>
       </footer>
     </div>

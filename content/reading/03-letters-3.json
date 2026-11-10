@@ -1,0 +1,128 @@
+{
+  "id": "letters-3",
+  "kind": "letters",
+  "track": "read",
+  "title": "אותיות: g o u l f b",
+  "emoji": "🅰️",
+  "items": [
+    {
+      "id": "l-g",
+      "en": "g",
+      "he": "ג",
+      "emoji": "🐐",
+      "keyword": "goat",
+      "examples": [
+        {
+          "en": "gift",
+          "emoji": "🎁"
+        },
+        {
+          "en": "guitar",
+          "emoji": "🎸"
+        },
+        {
+          "en": "girl",
+          "emoji": "👧"
+        }
+      ]
+    },
+    {
+      "id": "l-o",
+      "en": "o",
+      "he": "אוֹ – כמו octopus",
+      "emoji": "🐙",
+      "keyword": "octopus",
+      "examples": [
+        {
+          "en": "ox",
+          "emoji": "🐂"
+        },
+        {
+          "en": "otter",
+          "emoji": "🦦"
+        }
+      ],
+      "vowel": true
+    },
+    {
+      "id": "l-u",
+      "en": "u",
+      "he": "אַ – כמו umbrella",
+      "emoji": "☂️",
+      "keyword": "umbrella",
+      "examples": [
+        {
+          "en": "up",
+          "emoji": "⬆️"
+        }
+      ],
+      "vowel": true
+    },
+    {
+      "id": "l-l",
+      "en": "l",
+      "he": "ל",
+      "emoji": "🦁",
+      "keyword": "lion",
+      "examples": [
+        {
+          "en": "leaf",
+          "emoji": "🍃"
+        },
+        {
+          "en": "lemon",
+          "emoji": "🍋"
+        },
+        {
+          "en": "leg",
+          "emoji": "🦵"
+        }
+      ]
+    },
+    {
+      "id": "l-f",
+      "en": "f",
+      "he": "פ",
+      "emoji": "🐟",
+      "keyword": "fish",
+      "examples": [
+        {
+          "en": "frog",
+          "emoji": "🐸"
+        },
+        {
+          "en": "fire",
+          "emoji": "🔥"
+        },
+        {
+          "en": "foot",
+          "emoji": "🦶"
+        }
+      ],
+      "confusable": [
+        "p"
+      ]
+    },
+    {
+      "id": "l-b",
+      "en": "b",
+      "he": "בּ",
+      "emoji": "⚽",
+      "keyword": "ball",
+      "examples": [
+        {
+          "en": "bus",
+          "emoji": "🚌"
+        },
+        {
+          "en": "banana",
+          "emoji": "🍌"
+        },
+        {
+          "en": "bear",
+          "emoji": "🐻"
+        }
+      ]
+    }
+  ]
+}

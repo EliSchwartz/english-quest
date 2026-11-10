@@ -1,0 +1,51 @@
+{
+  "id": "short-u",
+  "kind": "decodable",
+  "track": "read",
+  "title": "קוראים: sun",
+  "emoji": "☀️",
+  "items": [
+    {
+      "id": "r-sun",
+      "en": "sun",
+      "he": "שמש",
+      "emoji": "☀️"
+    },
+    {
+      "id": "r-bus",
+      "en": "bus",
+      "he": "אוטובוס",
+      "emoji": "🚌"
+    },
+    {
+      "id": "r-cup",
+      "en": "cup",
+      "he": "כוס",
+      "emoji": "☕"
+    },
+    {
+      "id": "r-bug",
+      "en": "bug",
+      "he": "חרק",
+      "emoji": "🐛"
+    },
+    {
+      "id": "r-hug",
+      "en": "hug",
+      "he": "חיבוק",
+      "emoji": "🤗"
+    },
+    {
+      "id": "r-nut",
+      "en": "nut",
+      "he": "אגוז",
+      "emoji": "🥜"
+    },
+    {
+      "id": "r-run",
+      "en": "run",
+      "he": "לרוץ",
+      "emoji": "🏃"
+    }
+  ]
+}

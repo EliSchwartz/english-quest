@@ -1,0 +1,159 @@
+{
+  "id": "letters-2",
+  "kind": "letters",
+  "track": "read",
+  "title": "אותיות: c k e h r m d",
+  "emoji": "🔡",
+  "items": [
+    {
+      "id": "l-c",
+      "en": "c",
+      "he": "כּ",
+      "emoji": "🐈",
+      "keyword": "cat",
+      "examples": [
+        {
+          "en": "car",
+          "emoji": "🚗"
+        },
+        {
+          "en": "cake",
+          "emoji": "🎂"
+        },
+        {
+          "en": "cow",
+          "emoji": "🐄"
+        }
+      ],
+      "confusable": [
+        "k"
+      ]
+    },
+    {
+      "id": "l-k",
+      "en": "k",
+      "he": "כּ",
+      "emoji": "🪁",
+      "keyword": "kite",
+      "examples": [
+        {
+          "en": "key",
+          "emoji": "🔑"
+        },
+        {
+          "en": "king",
+          "emoji": "🤴"
+        },
+        {
+          "en": "kangaroo",
+          "emoji": "🦘"
+        }
+      ],
+      "confusable": [
+        "c"
+      ]
+    },
+    {
+      "id": "l-e",
+      "en": "e",
+      "he": "אֶ – כמו egg",
+      "emoji": "🥚",
+      "keyword": "egg",
+      "examples": [
+        {
+          "en": "elephant",
+          "emoji": "🐘"
+        },
+        {
+          "en": "elf",
+          "emoji": "🧝"
+        }
+      ],
+      "vowel": true
+    },
+    {
+      "id": "l-h",
+      "en": "h",
+      "he": "ה",
+      "emoji": "🎩",
+      "keyword": "hat",
+      "examples": [
+        {
+          "en": "horse",
+          "emoji": "🐴"
+        },
+        {
+          "en": "house",
+          "emoji": "🏠"
+        },
+        {
+          "en": "heart",
+          "emoji": "❤️"
+        }
+      ]
+    },
+    {
+      "id": "l-r",
+      "en": "r",
+      "he": "ר",
+      "emoji": "🐰",
+      "keyword": "rabbit",
+      "examples": [
+        {
+          "en": "rain",
+          "emoji": "🌧️"
+        },
+        {
+          "en": "ring",
+          "emoji": "💍"
+        },
+        {
+          "en": "robot",
+          "emoji": "🤖"
+        }
+      ]
+    },
+    {
+      "id": "l-m",
+      "en": "m",
+      "he": "מ",
+      "emoji": "🌙",
+      "keyword": "moon",
+      "examples": [
+        {
+          "en": "mouse",
+          "emoji": "🐭"
+        },
+        {
+          "en": "milk",
+          "emoji": "🥛"
+        },
+        {
+          "en": "monkey",
+          "emoji": "🐒"
+        }
+      ]
+    },
+    {
+      "id": "l-d",
+      "en": "d",
+      "he": "ד",
+      "emoji": "🐕",
+      "keyword": "dog",
+      "examples": [
+        {
+          "en": "duck",
+          "emoji": "🦆"
+        },
+        {
+          "en": "door",
+          "emoji": "🚪"
+        },
+        {
+          "en": "dinosaur",
+          "emoji": "🦕"
+        }
+      ]
+    }
+  ]
+}

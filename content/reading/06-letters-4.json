@@ -1,0 +1,98 @@
+{
+  "id": "letters-4",
+  "kind": "letters",
+  "track": "read",
+  "title": "אותיות: j z w v y",
+  "emoji": "🔠",
+  "items": [
+    {
+      "id": "l-j",
+      "en": "j",
+      "he": "ג׳",
+      "emoji": "🧃",
+      "keyword": "juice",
+      "examples": [
+        {
+          "en": "jeans",
+          "emoji": "👖"
+        },
+        {
+          "en": "jellyfish",
+          "emoji": "🪼"
+        }
+      ]
+    },
+    {
+      "id": "l-z",
+      "en": "z",
+      "he": "ז",
+      "emoji": "🦓",
+      "keyword": "zebra",
+      "examples": [
+        {
+          "en": "zero",
+          "emoji": "0️⃣"
+        },
+        {
+          "en": "zombie",
+          "emoji": "🧟"
+        }
+      ]
+    },
+    {
+      "id": "l-w",
+      "en": "w",
+      "he": "וו",
+      "emoji": "⌚",
+      "keyword": "watch",
+      "examples": [
+        {
+          "en": "whale",
+          "emoji": "🐳"
+        },
+        {
+          "en": "worm",
+          "emoji": "🪱"
+        },
+        {
+          "en": "water",
+          "emoji": "💧"
+        }
+      ]
+    },
+    {
+      "id": "l-v",
+      "en": "v",
+      "he": "ו",
+      "emoji": "🎻",
+      "keyword": "violin",
+      "examples": [
+        {
+          "en": "volcano",
+          "emoji": "🌋"
+        },
+        {
+          "en": "van",
+          "emoji": "🚐"
+        }
+      ]
+    },
+    {
+      "id": "l-y",
+      "en": "y",
+      "he": "י",
+      "emoji": "🪀",
+      "keyword": "yo-yo",
+      "examples": [
+        {
+          "en": "yarn",
+          "emoji": "🧶"
+        },
+        {
+          "en": "yellow",
+          "emoji": "🟡"
+        }
+      ]
+    }
+  ]
+}

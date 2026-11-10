@@ -5,7 +5,8 @@ import { SKILL_OF, type Exercise, type Item, type Sentence } from '../engine/typ
 import { comfort, praise } from '../lib/praise';
 import { sounds } from '../lib/sounds';
 import { speak } from '../lib/speech';
-import { ChoiceView } from './exercises/ChoiceView';
+import { ChoiceView, spoken } from './exercises/ChoiceView';
+import { SoundStartView } from './exercises/SoundStartView';
 import { MatchView } from './exercises/MatchView';
 import { WordBankView } from './exercises/WordBankView';
 
@@ -23,7 +24,7 @@ interface Props {
 interface Feedback {
   correct: boolean;
   message: string;
-  answer?: { en: string; he: string; emoji: string };
+  answer?: { en: string; he: string; emoji: string; say?: string };
 }
 
 export function Lesson({ exercises, items, sentences, onAnswer, onFinish, onQuit, test = false }: Props) {
@@ -71,21 +72,27 @@ export function Lesson({ exercises, items, sentences, onAnswer, onFinish, onQuit
         setQueue((q) => [...q, requeue(ex, retries.current)]);
       }
     }
-    if (answer) speak(answer.en);
+    if (answer) speak(answer.say ?? answer.en);
     setFeedback({ correct, message: correct ? praise() : test ? 'לא נורא!' : comfort(), answer });
   };
 
   const check = () => {
     if (ex.kind === 'word-bank') {
       const s = target(ex.targetId);
-      const ok = checkWordBank(s, chosen.map((t) => ex.tiles[t]));
+      const ok = checkWordBank(s, chosen.map((t) => ex.tiles[t]), ex.letters);
       log(ex.targetId, ok);
       settle(ok, { en: s.en, he: s.he, emoji: s.emoji });
+    } else if (ex.kind === 'sound-start') {
+      const letter = items.get(ex.itemId)!;
+      const pic = ex.pictures[ex.answer];
+      const ok = choice === String(ex.answer);
+      log(letter.id, ok);
+      settle(ok, { en: pic.en, he: `מתחיל ב-${letter.en}`, emoji: pic.emoji });
     } else if (ex.kind !== 'match-pairs') {
       const it = items.get(ex.itemId)!;
       const ok = choice === ex.itemId;
       log(it.id, ok);
-      settle(ok, { en: it.en, he: it.he, emoji: it.emoji });
+      settle(ok, { en: it.en, he: it.he, emoji: it.emoji, say: spoken(it) });
     }
   };
 
@@ -138,6 +145,8 @@ export function Lesson({ exercises, items, sentences, onAnswer, onFinish, onQuit
           <MatchView ex={ex} items={items} onComplete={matchDone} />
         ) : ex.kind === 'word-bank' ? (
           <WordBankView ex={ex} sentence={target(ex.targetId)} chosen={chosen} locked={!!feedback} onChange={setChosen} />
+        ) : ex.kind === 'sound-start' ? (
+          <SoundStartView ex={ex} letter={items.get(ex.itemId)!} selected={choice} locked={!!feedback} onSelect={setChoice} />
         ) : (
           <ChoiceView ex={ex} items={items} selected={choice} locked={!!feedback} onSelect={setChoice} />
         )}

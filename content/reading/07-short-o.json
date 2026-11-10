@@ -1,0 +1,51 @@
+{
+  "id": "short-o",
+  "kind": "decodable",
+  "track": "read",
+  "title": "קוראים: dog",
+  "emoji": "🐕",
+  "items": [
+    {
+      "id": "r-dog",
+      "en": "dog",
+      "he": "כלב",
+      "emoji": "🐕"
+    },
+    {
+      "id": "r-box",
+      "en": "box",
+      "he": "קופסה",
+      "emoji": "📦"
+    },
+    {
+      "id": "r-fox",
+      "en": "fox",
+      "he": "שועל",
+      "emoji": "🦊"
+    },
+    {
+      "id": "r-log",
+      "en": "log",
+      "he": "בול עץ",
+      "emoji": "🪵"
+    },
+    {
+      "id": "r-pot",
+      "en": "pot",
+      "he": "סיר",
+      "emoji": "🍲"
+    },
+    {
+      "id": "r-hot",
+      "en": "hot",
+      "he": "חם",
+      "emoji": "🥵"
+    },
+    {
+      "id": "r-mom",
+      "en": "mom",
+      "he": "אמא",
+      "emoji": "👩"
+    }
+  ]
+}

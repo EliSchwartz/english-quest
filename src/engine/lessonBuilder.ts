@@ -1,5 +1,17 @@
 import type { Progress } from './progress';
-import type { ChoiceExercise, ChoiceKind, Exercise, Item, MatchExercise, Sentence, Unit, WordBankExercise } from './types';
+import type {
+  ChoiceExercise,
+  ChoiceKind,
+  Exercise,
+  Item,
+  MatchExercise,
+  Sentence,
+  SoundStartExercise,
+  Unit,
+  WordBankExercise,
+} from './types';
+
+export type PracticeKind = ChoiceKind | 'word-bank' | 'sound-start';
 
 export const LESSON_SIZE = 12;
 export const JUMP_TEST_SIZE = 8;
@@ -64,7 +76,20 @@ export function newWordCount(p: Progress): number {
 }
 
 /** Exercise type climbs a difficulty ladder as the item's box grows. */
-export function kindForBox(box: number, type: Item['type'] = 'word'): ChoiceKind | 'word-bank' {
+export function kindForBox(box: number, type: Item['type'] = 'word'): PracticeKind {
+  if (type === 'letter') {
+    if (box <= 0) return 'letter-sound';
+    if (box === 1) return 'hear-letter';
+    if (box === 2) return 'sound-start';
+    return box % 2 ? 'hear-letter' : 'sound-start';
+  }
+  if (type === 'decodable') {
+    // Alternate reading (word -> picture) with hearing (sound -> written word) for variety.
+    if (box <= 0) return 'read-pick';
+    if (box === 1) return 'listen-word';
+    if (box === 2) return 'read-pick';
+    return 'word-bank';
+  }
   if (type === 'phrase') {
     if (box <= 0) return 'en-to-he';
     if (box === 1) return 'listen-meaning';
@@ -78,6 +103,14 @@ export function kindForBox(box: number, type: Item['type'] = 'word'): ChoiceKind
 }
 
 /** Tiles: words without punctuation (so a trailing '?' doesn't give the answer away). */
+/** What a match/choice option shows on its picture side: two items with the same face can't be told apart. */
+const face = (i: Item) => (i.type === 'phrase' ? i.he : i.emoji);
+
+function uniqueBy<T>(xs: T[], key: (x: T) => string): T[] {
+  const seen = new Set<string>();
+  return xs.filter((x) => (seen.has(key(x)) ? false : (seen.add(key(x)), true)));
+}
+
 const wordsOf = (s: string) => s.split(' ').map((w) => w.replace(/[.!?,]/g, '')).filter(Boolean);
 const bare = (w: string) => w.toLowerCase().replace(/[.!?,]/g, '');
 
@@ -94,11 +127,20 @@ class Factory {
     return { ...e, key, origin: key } as T;
   }
 
+  /** Items that can't be told apart from `item` (c and k sound the same). */
+  private confusable(item: Item, other: Item) {
+    return other.id === item.id || (item.confusable ?? []).includes(other.en) || (other.confusable ?? []).includes(item.en);
+  }
+
   choice(item: Item, kind: ChoiceKind, isNew = false): ChoiceExercise {
+    // Vowels have no Hebrew letter to pick: practise them by hearing a keyword instead.
+    if (kind === 'letter-sound' && item.vowel) kind = 'hear-letter';
+    const usable = (i: Item) =>
+      !this.confusable(item, i) && !(kind === 'letter-sound' && i.vowel) && face(i) !== face(item) && i.en !== item.en && i.he !== item.he;
     const sameUnit = this.units.find((u) => u.id === item.unitId)?.items ?? [];
-    let others = sameUnit.filter((i) => i.id !== item.id);
-    if (others.length < 3) others = this.pool.filter((i) => i.id !== item.id && i.type === item.type);
-    const distractors = shuffle(others, this.rng).slice(0, 3);
+    let others = sameUnit.filter(usable);
+    if (others.length < 3) others = this.pool.filter((i) => i.type === item.type && usable(i));
+    const distractors = uniqueBy(shuffle(others, this.rng), face).slice(0, 3);
     const options = shuffle([item, ...distractors], this.rng).map((i) => i.id);
     return this.mk<ChoiceExercise>({ kind, itemId: item.id, options, isNew });
   }
@@ -118,7 +160,31 @@ class Factory {
     return this.mk<WordBankExercise>({ kind: 'word-bank', targetId: item.id, tiles: shuffle([...wordsOf(item.en), ...distractors], this.rng) });
   }
 
-  practice(item: Item, kind: ChoiceKind | 'word-bank'): Exercise {
+  /** Letter -> which picture starts with this sound? Distractor pictures come from other letters. */
+  soundStart(item: Item): SoundStartExercise {
+    const own = [{ en: item.keyword ?? item.en, emoji: item.emoji }, ...(item.examples ?? [])];
+    const correct = own[Math.floor(this.rng() * own.length)];
+    const letters = this.pool.filter((i) => i.type === 'letter' && !this.confusable(item, i));
+    const distractors = shuffle(letters, this.rng)
+      .slice(0, 3)
+      .map((l) => {
+        const pics = [{ en: l.keyword ?? l.en, emoji: l.emoji }, ...(l.examples ?? [])];
+        return pics[Math.floor(this.rng() * pics.length)];
+      });
+    const pictures = shuffle([correct, ...distractors], this.rng);
+    return this.mk<SoundStartExercise>({ kind: 'sound-start', itemId: item.id, pictures, answer: pictures.indexOf(correct) });
+  }
+
+  /** Spell a word from letter tiles (plus two letters that aren't in it). */
+  spell(item: Item): WordBankExercise {
+    const letters = [...item.en.toLowerCase()].filter((c) => /[a-z]/.test(c));
+    const others = shuffle([...'abcdefghijklmnoprstuvwyz'].filter((c) => !letters.includes(c)), this.rng).slice(0, 2);
+    return this.mk<WordBankExercise>({ kind: 'word-bank', targetId: item.id, tiles: shuffle([...letters, ...others], this.rng), letters: true });
+  }
+
+  practice(item: Item, kind: PracticeKind): Exercise {
+    if (kind === 'sound-start') return this.soundStart(item);
+    if (kind === 'word-bank' && item.type === 'decodable') return this.spell(item);
     if (kind !== 'word-bank') return this.choice(item, kind);
     // Building a one- or two-word phrase from tiles is too trivial: ask for recall instead.
     return wordsOf(item.en).length >= 3 ? this.phrase(item) : this.choice(item, 'he-to-en');
@@ -147,8 +213,10 @@ export function buildLesson(units: Unit[], p: Progress, now: number, rng: Rng = 
 
   // 1. New items from the current unit: an intro, then a second exposure later on.
   const newItems = cur.items.filter((i) => !p.items[i.id]).slice(0, newWordCount(p));
-  const intros = newItems.map((i) => f.choice(i, i.type === 'phrase' ? 'en-to-he' : 'pick-picture', true));
-  const seconds = newItems.map((i) => f.choice(i, i.type === 'phrase' ? 'listen-meaning' : 'listen-picture'));
+  const INTRO: Record<Item['type'], ChoiceKind> = { word: 'pick-picture', phrase: 'en-to-he', letter: 'letter-sound', decodable: 'read-pick' };
+  const SECOND: Record<Item['type'], ChoiceKind> = { word: 'listen-picture', phrase: 'listen-meaning', letter: 'hear-letter', decodable: 'listen-word' };
+  const intros = newItems.map((i) => f.choice(i, INTRO[i.type], true));
+  const seconds = newItems.map((i) => f.choice(i, SECOND[i.type]));
 
   // 2. Seen items, prioritised: due first, then weak, then least practised.
   const seen = pool.filter((i) => p.items[i.id]);
@@ -173,7 +241,7 @@ export function buildLesson(units: Unit[], p: Progress, now: number, rng: Rng = 
   const wordBanks = sentencePool.slice(0, 2).map((s) => f.sentence(s));
 
   // 4. Match pairs: newest + most urgent items.
-  const matchItems = [...newItems, ...reviewOrder].slice(0, 5);
+  const matchItems = uniqueBy(uniqueBy([...newItems, ...reviewOrder], face), (i) => i.en).slice(0, 5);
   const match = matchItems.length >= 3 ? [f.match(matchItems)] : [];
 
   // 5. Fill the remaining slots with reviews at the right ladder step.
@@ -186,6 +254,12 @@ export function buildLesson(units: Unit[], p: Progress, now: number, rng: Rng = 
     for (const i of newItems) {
       if (reviews.length + extra.length < slots) extra.push(f.practice(i, kindForBox(box, i.type)));
     }
+  }
+
+  // Small units can run out of material: practise reviewed items again one step up the ladder.
+  for (const i of reviewOrder.slice(0, slots)) {
+    if (reviews.length + extra.length >= slots) break;
+    extra.push(f.practice(i, kindForBox(st(i).box + 1, i.type)));
   }
 
   const head = interleave<Exercise>(intros, reviews.slice(0, intros.length));
@@ -202,8 +276,13 @@ export function buildJumpTest(units: Unit[], unitId: string, rng: Rng = Math.ran
   const f = new Factory(units, unit.items, rng);
   const picked = shuffle(unit.items, rng).slice(0, JUMP_TEST_SIZE);
   return picked.map((item, k) => {
-    const kinds: (ChoiceKind | 'word-bank')[] =
-      item.type === 'phrase' ? ['listen-meaning', 'he-to-en', 'word-bank'] : ['listen-word', 'he-to-en'];
+    const KINDS: Record<Item['type'], PracticeKind[]> = {
+      word: ['listen-word', 'he-to-en'],
+      phrase: ['listen-meaning', 'he-to-en', 'word-bank'],
+      letter: ['hear-letter', 'sound-start', 'letter-sound'],
+      decodable: ['read-pick', 'listen-word', 'word-bank'],
+    };
+    const kinds = KINDS[item.type];
     return f.practice(item, kinds[k % kinds.length]);
   });
 }
@@ -215,6 +294,7 @@ export function itemsUpTo(units: Unit[], unitId: string): string[] {
 }
 
 const targetOf = (e: Exercise) => (e.kind === 'match-pairs' ? null : e.kind === 'word-bank' ? e.targetId : e.itemId);
+export { targetOf };
 
 /** Avoid asking about the same item twice in a row by swapping with a later exercise. */
 export function spreadOut(list: Exercise[]): Exercise[] {
@@ -233,10 +313,14 @@ export function requeue(e: Exercise, n: number, rng: Rng = Math.random): Exercis
   const key = `${e.origin}-r${n}`;
   if (e.kind === 'word-bank') return { ...e, key, tiles: shuffle(e.tiles, rng) };
   if (e.kind === 'match-pairs') return { ...e, key, itemIds: shuffle(e.itemIds, rng) };
+  if (e.kind === 'sound-start') {
+    const pictures = shuffle(e.pictures, rng);
+    return { ...e, key, pictures, answer: pictures.indexOf(e.pictures[e.answer]) };
+  }
   return { ...e, key, isNew: false, options: shuffle(e.options, rng) };
 }
 
-export function checkWordBank(target: { en: string }, chosen: string[]): boolean {
-  const norm = (s: string) => s.toLowerCase().replace(/[.!?,]/g, '').replace(/\s+/g, ' ').trim();
-  return norm(chosen.join(' ')) === norm(target.en);
+export function checkWordBank(target: { en: string }, chosen: string[], letters = false): boolean {
+  const norm = (s: string) => s.toLowerCase().replace(/[.!?,]/g, '').replace(/\s+/g, letters ? '' : ' ').trim();
+  return norm(chosen.join(letters ? '' : ' ')) === norm(target.en);
 }

@@ -1,0 +1,51 @@
+{
+  "id": "short-e",
+  "kind": "decodable",
+  "track": "read",
+  "title": "קוראים: bed",
+  "emoji": "🛏️",
+  "items": [
+    {
+      "id": "r-bed",
+      "en": "bed",
+      "he": "מיטה",
+      "emoji": "🛏️"
+    },
+    {
+      "id": "r-hen",
+      "en": "hen",
+      "he": "תרנגולת",
+      "emoji": "🐔"
+    },
+    {
+      "id": "r-pen",
+      "en": "pen",
+      "he": "עט",
+      "emoji": "🖊️"
+    },
+    {
+      "id": "r-ten",
+      "en": "ten",
+      "he": "עשר",
+      "emoji": "🔟"
+    },
+    {
+      "id": "r-web",
+      "en": "web",
+      "he": "קורי עכביש",
+      "emoji": "🕸️"
+    },
+    {
+      "id": "r-leg",
+      "en": "leg",
+      "he": "רגל",
+      "emoji": "🦵"
+    },
+    {
+      "id": "r-net",
+      "en": "net",
+      "he": "רשת",
+      "emoji": "🥅"
+    }
+  ]
+}

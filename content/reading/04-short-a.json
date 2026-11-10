@@ -1,0 +1,69 @@
+{
+  "id": "short-a",
+  "kind": "decodable",
+  "track": "read",
+  "title": "קוראים: cat",
+  "emoji": "🐈",
+  "items": [
+    {
+      "id": "r-cat",
+      "en": "cat",
+      "he": "חתול",
+      "emoji": "🐈"
+    },
+    {
+      "id": "r-hat",
+      "en": "hat",
+      "he": "כובע",
+      "emoji": "🎩"
+    },
+    {
+      "id": "r-bat",
+      "en": "bat",
+      "he": "עטלף",
+      "emoji": "🦇"
+    },
+    {
+      "id": "r-map",
+      "en": "map",
+      "he": "מפה",
+      "emoji": "🗺️"
+    },
+    {
+      "id": "r-van",
+      "en": "van",
+      "he": "טנדר",
+      "emoji": "🚐"
+    },
+    {
+      "id": "r-pan",
+      "en": "pan",
+      "he": "מחבת",
+      "emoji": "🍳"
+    },
+    {
+      "id": "r-can",
+      "en": "can",
+      "he": "פחית",
+      "emoji": "🥫"
+    },
+    {
+      "id": "r-bag",
+      "en": "bag",
+      "he": "תיק",
+      "emoji": "👜"
+    },
+    {
+      "id": "r-rat",
+      "en": "rat",
+      "he": "עכברוש",
+      "emoji": "🐀"
+    },
+    {
+      "id": "r-man",
+      "en": "man",
+      "he": "איש",
+      "emoji": "👨"
+    }
+  ]
+}

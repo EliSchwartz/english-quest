@@ -1,0 +1,69 @@
+{
+  "id": "magic-e",
+  "kind": "decodable",
+  "track": "read",
+  "title": "קוראים: e שקטה",
+  "emoji": "🎂",
+  "items": [
+    {
+      "id": "r-cake",
+      "en": "cake",
+      "he": "עוגה",
+      "emoji": "🎂"
+    },
+    {
+      "id": "r-bike",
+      "en": "bike",
+      "he": "אופניים",
+      "emoji": "🚲"
+    },
+    {
+      "id": "r-kite",
+      "en": "kite",
+      "he": "עפיפון",
+      "emoji": "🪁"
+    },
+    {
+      "id": "r-home",
+      "en": "home",
+      "he": "בית",
+      "emoji": "🏠"
+    },
+    {
+      "id": "r-bone",
+      "en": "bone",
+      "he": "עצם",
+      "emoji": "🦴"
+    },
+    {
+      "id": "r-rope",
+      "en": "rope",
+      "he": "חבל",
+      "emoji": "🪢"
+    },
+    {
+      "id": "r-cube",
+      "en": "cube",
+      "he": "קובייה",
+      "emoji": "🧊"
+    },
+    {
+      "id": "r-five",
+      "en": "five",
+      "he": "חמש",
+      "emoji": "5️⃣"
+    },
+    {
+      "id": "r-nine",
+      "en": "nine",
+      "he": "תשע",
+      "emoji": "9️⃣"
+    },
+    {
+      "id": "r-game",
+      "en": "game",
+      "he": "משחק",
+      "emoji": "🎮"
+    }
+  ]
+}

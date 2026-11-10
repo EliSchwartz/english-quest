@@ -14,7 +14,12 @@ function seeded(seed = 1) {
 }
 
 const mkItems = (prefix: string, n: number) =>
-  Array.from({ length: n }, (_, k) => ({ id: `${prefix}${k}`, en: `${prefix}${k}`, he: `ה${k}`, emoji: '⭐' }));
+  Array.from({ length: n }, (_, k) => ({
+    id: `${prefix}${k}`,
+    en: `${prefix}${k}`,
+    he: `ה${prefix}${k}`,
+    emoji: String.fromCodePoint(0x1f400 + prefix.charCodeAt(0) * 20 - 1900 + k),
+  }));
 
 const units = buildUnits([
   { id: 'a', title: 'A', emoji: 'A', items: mkItems('a', 10), sentences: [{ id: 's1', en: 'I like a0', he: 'x', emoji: 'x', distractors: ['you'] }] },
@@ -108,7 +113,7 @@ describe('buildLesson', () => {
   it('reviews climb the ladder and sentences appear once most words are seen', () => {
     const p = withItems({ a0: 0, a1: 1, a2: 2, a3: 3, a4: 4, a5: 5 });
     const lesson = buildLesson(units, p, NOW, seeded(3));
-    const review = (id: string) => lesson.find((e) => 'itemId' in e && e.itemId === id && !e.isNew);
+    const review = (id: string) => lesson.find((e) => 'itemId' in e && e.itemId === id && !('isNew' in e && e.isNew));
     expect(review('a0')?.kind).toBe(kindForBox(0));
     expect(review('a3')?.kind).toBe('he-to-en');
     expect(lesson.filter((e) => e.kind === 'word-bank')).toHaveLength(1);
@@ -213,5 +218,99 @@ describe('jump ahead', () => {
     expect(unitStatuses(units, withItems(boxes))[1].unlocked).toBe(true);
     for (const k of [0, 1, 2, 3, 4]) boxes[`a${k}`] = 0;
     expect(unitStatuses(units, withItems(boxes))[1].unlocked).toBe(true);
+  });
+});
+
+describe('reading track', () => {
+  const readUnits = UNITS_READ();
+  function UNITS_READ() {
+    return buildUnits([
+      {
+        id: 'L',
+        kind: 'letters',
+        track: 'read',
+        title: 'L',
+        emoji: 'L',
+        items: [
+          { id: 'l-c', en: 'c', he: 'כּ', emoji: '🐈', keyword: 'cat', examples: [{ en: 'car', emoji: '🚗' }], confusable: ['k'] },
+          { id: 'l-k', en: 'k', he: 'כּ', emoji: '🪁', keyword: 'kite', examples: [{ en: 'key', emoji: '🔑' }], confusable: ['c'] },
+          { id: 'l-a', en: 'a', he: 'אַ', emoji: '🍎', keyword: 'apple', examples: [], vowel: true },
+          { id: 'l-m', en: 'm', he: 'מ', emoji: '🌙', keyword: 'moon', examples: [] },
+          { id: 'l-d', en: 'd', he: 'ד', emoji: '🐕', keyword: 'dog', examples: [] },
+          { id: 'l-s', en: 's', he: 'ס', emoji: '☀️', keyword: 'sun', examples: [] },
+        ],
+      },
+      {
+        id: 'W',
+        kind: 'decodable',
+        track: 'read',
+        title: 'W',
+        emoji: 'W',
+        items: ['cat', 'hat', 'bat', 'map', 'shell'].map((en, k) => ({ id: `r-${en}`, en, he: en, emoji: ['🐈', '🎩', '🦇', '🗺️', '🐚'][k] })),
+      },
+    ]);
+  }
+
+  it('never offers c and k as alternatives for each other, and vowels are never letter-sound', () => {
+    for (let seed = 1; seed < 40; seed++) {
+      const boxes: Record<string, number> = { 'l-c': seed % 4, 'l-k': (seed + 1) % 4, 'l-a': 0, 'l-m': 1, 'l-d': 2, 'l-s': 3 };
+      for (const e of buildLesson(readUnits, withItems(boxes), NOW, seeded(seed))) {
+        if ('options' in e && (e.itemId === 'l-c' || e.itemId === 'l-k')) {
+          expect(e.options.filter((o) => o === 'l-c' || o === 'l-k')).toHaveLength(1);
+        }
+        if (e.kind === 'letter-sound') {
+          expect(e.itemId).not.toBe('l-a');
+          expect(e.options).not.toContain('l-a');
+        }
+        if (e.kind === 'sound-start') {
+          const own = e.itemId === 'l-c' ? ['cat', 'car'] : e.itemId === 'l-k' ? ['kite', 'key'] : null;
+          if (own) expect(e.pictures.filter((p) => ['cat', 'car', 'kite', 'key'].includes(p.en))).toHaveLength(1);
+          expect(e.pictures[e.answer].en[0]).toBe(readUnits[0].items.find((i) => i.id === e.itemId)!.en);
+          const r = requeue(e, 1, seeded(seed));
+          expect(r.kind === 'sound-start' && r.pictures[r.answer].en).toBe(e.pictures[e.answer].en);
+        }
+      }
+    }
+  });
+
+  it('decodable words are read without audio first, then spelled from letters', () => {
+    expect(kindForBox(0, 'decodable')).toBe('read-pick');
+    const boxes = Object.fromEntries(readUnits.flatMap((u) => u.items).map((i) => [i.id, 3]));
+    const spell = buildLesson(readUnits, withItems(boxes), NOW, seeded(9)).filter((e) => e.kind === 'word-bank');
+    expect(spell.length).toBeGreaterThan(0);
+    for (const e of spell) {
+      if (e.kind !== 'word-bank') continue;
+      expect(e.letters).toBe(true);
+      const word = e.targetId.slice(2);
+      expect(e.tiles).toHaveLength(word.length + 2);
+      expect(checkWordBank({ en: word }, [...word], true)).toBe(true);
+    }
+  });
+});
+
+describe('no look-alike options', () => {
+  it('match pairs and choices never show two identical pictures', () => {
+    const units2 = buildUnits([
+      { id: 'L', kind: 'letters', track: 'read', title: 'L', emoji: 'L', items: [
+        { id: 'l-c', en: 'c', he: 'כּ', emoji: '🐈', keyword: 'cat', examples: [] },
+        { id: 'l-d', en: 'd', he: 'ד', emoji: '🐕', keyword: 'dog', examples: [] },
+        { id: 'l-s', en: 's', he: 'ס', emoji: '☀️', keyword: 'sun', examples: [] },
+      ] },
+      { id: 'W', kind: 'decodable', track: 'read', title: 'W', emoji: 'W', items: [
+        { id: 'r-cat', en: 'cat', he: 'חתול', emoji: '🐈' },
+        { id: 'r-dog', en: 'dog', he: 'כלב', emoji: '🐕' },
+        { id: 'r-sun', en: 'sun', he: 'שמש', emoji: '☀️' },
+        { id: 'r-hat', en: 'hat', he: 'כובע', emoji: '🎩' },
+      ] },
+    ]);
+    const all = new Map(units2.flatMap((u) => u.items).map((i) => [i.id, i]));
+    for (let seed = 1; seed < 40; seed++) {
+      const p = withItems({ 'l-c': 2, 'l-d': 2, 'l-s': 2 });
+      for (const e of buildLesson(units2, p, NOW, seeded(seed))) {
+        const ids = e.kind === 'match-pairs' ? e.itemIds : 'options' in e ? e.options : [];
+        const faces = ids.map((id) => all.get(id)!.emoji);
+        expect(new Set(faces).size).toBe(faces.length);
+      }
+    }
   });
 });

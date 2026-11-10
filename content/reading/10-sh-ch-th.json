@@ -1,0 +1,63 @@
+{
+  "id": "sh-ch-th",
+  "kind": "decodable",
+  "track": "read",
+  "title": "קוראים: sh ch th",
+  "emoji": "🚢",
+  "items": [
+    {
+      "id": "r-ship",
+      "en": "ship",
+      "he": "ספינה",
+      "emoji": "🚢"
+    },
+    {
+      "id": "r-fish",
+      "en": "fish",
+      "he": "דג",
+      "emoji": "🐟"
+    },
+    {
+      "id": "r-shell",
+      "en": "shell",
+      "he": "צדף",
+      "emoji": "🐚"
+    },
+    {
+      "id": "r-shop",
+      "en": "shop",
+      "he": "חנות",
+      "emoji": "🛍️"
+    },
+    {
+      "id": "r-chick",
+      "en": "chick",
+      "he": "אפרוח",
+      "emoji": "🐥"
+    },
+    {
+      "id": "r-lunch",
+      "en": "lunch",
+      "he": "ארוחת צהריים",
+      "emoji": "🍱"
+    },
+    {
+      "id": "r-bench",
+      "en": "bench",
+      "he": "ספסל",
+      "emoji": "🪑"
+    },
+    {
+      "id": "r-bath",
+      "en": "bath",
+      "he": "אמבטיה",
+      "emoji": "🛁"
+    },
+    {
+      "id": "r-math",
+      "en": "math",
+      "he": "חשבון",
+      "emoji": "➗"
+    }
+  ]
+}
