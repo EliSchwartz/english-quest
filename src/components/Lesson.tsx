@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
-import { checkWordBank, requeue } from '../engine/lessonBuilder';
+import { JUMP_MAX_MISTAKES, checkWordBank, requeue } from '../engine/lessonBuilder';
 import type { AnswerEvent, LessonResult } from '../engine/progress';
 import { SKILL_OF, type Exercise, type Item, type Sentence } from '../engine/types';
 import { comfort, praise } from '../lib/praise';
@@ -16,6 +16,8 @@ interface Props {
   onAnswer: (e: AnswerEvent) => void;
   onFinish: (r: LessonResult) => void;
   onQuit: () => void;
+  /** Jump-ahead test: no retries, answers don't change memory state. */
+  test?: boolean;
 }
 
 interface Feedback {
@@ -24,7 +26,8 @@ interface Feedback {
   answer?: { en: string; he: string; emoji: string };
 }
 
-export function Lesson({ exercises, items, sentences, onAnswer, onFinish, onQuit }: Props) {
+export function Lesson({ exercises, items, sentences, onAnswer, onFinish, onQuit, test = false }: Props) {
+  const target = (id: string) => (sentences.get(id) ?? items.get(id))!;
   const [queue, setQueue] = useState(exercises);
   const [pos, setPos] = useState(0);
   const [choice, setChoice] = useState<string | null>(null);
@@ -38,6 +41,7 @@ export function Lesson({ exercises, items, sentences, onAnswer, onFinish, onQuit
   const retries = useRef(0);
 
   const total = useMemo(() => new Set(exercises.map((e) => e.origin)).size, [exercises]);
+  const mistakes = [...firstTry.current.values()].filter((v) => !v).length;
   const ex = queue[pos];
 
   const log = (itemId: string, correct: boolean) => {
@@ -47,6 +51,7 @@ export function Lesson({ exercises, items, sentences, onAnswer, onFinish, onQuit
       skill: SKILL_OF[ex.kind],
       correct,
       retry: firstTry.current.has(ex.origin),
+      ...(test ? { test } : {}),
       ms: Date.now() - shownAt.current,
       ts: Date.now(),
     });
@@ -61,18 +66,20 @@ export function Lesson({ exercises, items, sentences, onAnswer, onFinish, onQuit
     } else {
       sounds.wrong();
       setCombo(0);
-      retries.current += 1;
-      setQueue((q) => [...q, requeue(ex, retries.current)]);
+      if (!test) {
+        retries.current += 1;
+        setQueue((q) => [...q, requeue(ex, retries.current)]);
+      }
     }
     if (answer) speak(answer.en);
-    setFeedback({ correct, message: correct ? praise() : comfort(), answer });
+    setFeedback({ correct, message: correct ? praise() : test ? 'לא נורא!' : comfort(), answer });
   };
 
   const check = () => {
     if (ex.kind === 'word-bank') {
-      const s = sentences.get(ex.sentenceId)!;
+      const s = target(ex.targetId);
       const ok = checkWordBank(s, chosen.map((t) => ex.tiles[t]));
-      log(s.id, ok);
+      log(ex.targetId, ok);
       settle(ok, { en: s.en, he: s.he, emoji: s.emoji });
     } else if (ex.kind !== 'match-pairs') {
       const it = items.get(ex.itemId)!;
@@ -92,7 +99,7 @@ export function Lesson({ exercises, items, sentences, onAnswer, onFinish, onQuit
   };
 
   const next = () => {
-    if (pos + 1 >= queue.length) {
+    if (pos + 1 >= queue.length || (test && mistakes > JUMP_MAX_MISTAKES)) {
       const results = [...firstTry.current.values()];
       onFinish({ startedAt: startedAt.current, firstTryCorrect: results.filter(Boolean).length, total: results.length });
       return;
@@ -114,9 +121,15 @@ export function Lesson({ exercises, items, sentences, onAnswer, onFinish, onQuit
           ✕
         </button>
         <div className="bar">
-          <div className="bar-fill" style={{ width: `${(solved.size / total) * 100}%` }} />
+          <div className="bar-fill" style={{ width: `${((test ? firstTry.current.size : solved.size) / total) * 100}%` }} />
         </div>
-        {combo >= 3 && <div className="combo">🔥 {combo}</div>}
+        {test ? (
+          <div className="test-lives" aria-label="טעויות">
+            {Array.from({ length: 3 }, (_, k) => (k < 3 - mistakes ? '⚡' : '·')).join('')}
+          </div>
+        ) : (
+          combo >= 3 && <div className="combo">🔥 {combo}</div>
+        )}
       </header>
 
       <main className="lesson-body" key={ex.key}>
@@ -124,7 +137,7 @@ export function Lesson({ exercises, items, sentences, onAnswer, onFinish, onQuit
         {ex.kind === 'match-pairs' ? (
           <MatchView ex={ex} items={items} onComplete={matchDone} />
         ) : ex.kind === 'word-bank' ? (
-          <WordBankView ex={ex} sentence={sentences.get(ex.sentenceId)!} chosen={chosen} locked={!!feedback} onChange={setChosen} />
+          <WordBankView ex={ex} sentence={target(ex.targetId)} chosen={chosen} locked={!!feedback} onChange={setChosen} />
         ) : (
           <ChoiceView ex={ex} items={items} selected={choice} locked={!!feedback} onSelect={setChoice} />
         )}

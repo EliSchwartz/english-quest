@@ -1,0 +1,20 @@
+{
+  "id": "classroom",
+  "kind": "phrases",
+  "title": "המורה אומרת",
+  "emoji": "🏫",
+  "items": [
+    { "id": "p-sit-down", "en": "Sit down, please", "he": "שבו, בבקשה", "emoji": "🪑" },
+    { "id": "p-listen", "en": "Listen to me", "he": "תקשיבו לי", "emoji": "👂" },
+    { "id": "p-raise-hand", "en": "Raise your hand", "he": "תרימו יד", "emoji": "✋" },
+    { "id": "p-open-book", "en": "Open your book", "he": "פתחו את הספר", "emoji": "📖" },
+    { "id": "p-take-pencil", "en": "Take out a pencil", "he": "הוציאו עיפרון", "emoji": "✏️" },
+    { "id": "p-write-name", "en": "Write your name", "he": "כתבו את השם שלכם", "emoji": "📝" },
+    { "id": "p-line-up", "en": "Line up at the door", "he": "עמדו בשורה ליד הדלת", "emoji": "🚪" },
+    { "id": "p-be-quiet", "en": "Be quiet, please", "he": "שקט, בבקשה", "emoji": "🤫" },
+    { "id": "p-work-partner", "en": "Work with a partner", "he": "עבדו בזוגות", "emoji": "👯" },
+    { "id": "p-clean-up", "en": "Time to clean up", "he": "הגיע הזמן לסדר", "emoji": "🧹" },
+    { "id": "p-recess", "en": "It's time for recess", "he": "הגיע הזמן להפסקה", "emoji": "🛝" },
+    { "id": "p-good-job", "en": "Good job!", "he": "כל הכבוד!", "emoji": "⭐" }
+  ]
+}

@@ -210,3 +210,37 @@ button:disabled { cursor: default; }
 .stat-acc { border-color: var(--green); } .stat-acc .stat-label { background: var(--green); }
 .stat-gems { border-color: var(--blue); } .stat-gems .stat-label { background: var(--blue); }
 .streak-note { font-size: 1.3rem; font-weight: 800; color: var(--orange); }
+
+/* ---------- Phrases ---------- */
+.mid { font-size: 1.6rem; font-weight: 800; text-align: center; }
+.big-he { font-size: 1.6rem; font-weight: 800; }
+.emoji-hint { width: 100%; text-align: center; font-size: 2rem; }
+.options.long { grid-template-columns: 1fr; }
+.options.words .option .he { font-size: 1.25rem; }
+.match-col .option .he { font-size: 1rem; line-height: 1.25; }
+.match-col .option .en { font-size: 1rem; }
+
+/* ---------- Jump ahead ---------- */
+.node.open::before { background: var(--green); }
+.jump-chip {
+  border: 2px solid var(--blue); color: var(--blue-dark); background: var(--blue-bg);
+  border-radius: 99px; padding: 3px 12px; font-weight: 800; font-size: 0.9rem;
+}
+.btn-blue { background: var(--blue); box-shadow: 0 4px 0 var(--blue-dark); }
+.btn-text { border: none; background: none; color: var(--muted); font-weight: 800; padding: 12px; font-size: 1rem; }
+.sheet-backdrop {
+  position: fixed; inset: 0; z-index: 10; background: rgba(0, 0, 0, 0.45);
+  display: flex; align-items: flex-end; justify-content: center; animation: fade 0.2s;
+}
+.sheet {
+  width: 100%; max-width: 520px; background: var(--bg); border-radius: 24px 24px 0 0;
+  padding: 24px 16px calc(env(safe-area-inset-bottom, 0px) + 16px);
+  display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center;
+  animation: rise 0.25s ease-out;
+}
+.sheet h2 { margin: 0; font-size: 1.5rem; }
+.sheet p { margin: 0 0 8px; color: var(--muted); font-size: 1.1rem; line-height: 1.5; }
+.sheet-emoji { font-size: 3.5rem; }
+.test-lives { font-size: 1.2rem; letter-spacing: 2px; min-width: 3.5em; text-align: center; }
+.done-sub { margin: 0; color: var(--muted); font-size: 1.15rem; }
+@keyframes fade { from { opacity: 0; } }

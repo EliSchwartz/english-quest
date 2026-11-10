@@ -5,6 +5,8 @@ export interface Item {
   emoji: string;
   audio?: string;
   unitId: string;
+  /** 'word' items are practised with pictures; 'phrase' items with meanings and sentence building. */
+  type: 'word' | 'phrase';
 }
 
 export interface Sentence {
@@ -18,6 +20,7 @@ export interface Sentence {
 
 export interface Unit {
   id: string;
+  kind: 'words' | 'phrases';
   title: string;
   emoji: string;
   items: Item[];
@@ -30,9 +33,11 @@ export type ExerciseKind =
   | 'pick-picture' // see + hear English word -> pick the picture
   | 'listen-picture' // hear only -> pick the picture
   | 'listen-word' // hear only -> pick the written English word
-  | 'he-to-en' // see Hebrew + picture -> pick the English word
+  | 'he-to-en' // see Hebrew + picture -> pick the English word/phrase
+  | 'en-to-he' // see + hear English phrase -> pick the Hebrew meaning
+  | 'listen-meaning' // hear English only -> pick the Hebrew meaning
   | 'match-pairs' // match English words to pictures
-  | 'word-bank'; // build the English sentence from tiles
+  | 'word-bank'; // build the English sentence/phrase from tiles
 
 export type ChoiceKind = Exclude<ExerciseKind, 'match-pairs' | 'word-bank'>;
 
@@ -55,7 +60,7 @@ export interface MatchExercise extends Base {
 
 export interface WordBankExercise extends Base {
   kind: 'word-bank';
-  sentenceId: string;
+  targetId: string; // a sentence id or a phrase item id
   tiles: string[];
 }
 
@@ -66,6 +71,8 @@ export const SKILL_OF: Record<ExerciseKind, Skill> = {
   'match-pairs': 'recognition',
   'listen-picture': 'listening',
   'listen-word': 'listening',
+  'listen-meaning': 'listening',
+  'en-to-he': 'recognition',
   'he-to-en': 'recall',
   'word-bank': 'production',
 };

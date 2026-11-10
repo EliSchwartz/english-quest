@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { buildUnits } from './content';
-import { applyAnswer, currentStreak, emptyProgress, finishLesson, recordAnswer, type Progress } from './progress';
-import { buildLesson, checkWordBank, kindForBox, requeue, unitStatuses } from './lessonBuilder';
+import { applyAnswer, currentStreak, emptyProgress, finishLesson, markKnown, recordAnswer, type Progress } from './progress';
+import { buildJumpTest, buildLesson, checkWordBank, itemsUpTo, kindForBox, newWordCount, requeue, unitStatuses } from './lessonBuilder';
 
 const DAY = 86400000;
 const NOW = new Date(2026, 10, 10, 17, 0).getTime();
@@ -125,7 +125,7 @@ describe('buildLesson', () => {
     for (let seed = 1; seed < 30; seed++) {
       for (const p of [emptyProgress(), withItems({ a0: 0, a1: 1, a2: 2 })]) {
         const lesson = buildLesson(units, p, NOW, seeded(seed));
-        const ids = lesson.map((e) => ('itemId' in e ? e.itemId : e.key));
+        const ids = lesson.map((e) => ('itemId' in e ? e.itemId : e.kind === 'word-bank' ? e.targetId : e.key));
         for (let i = 1; i < ids.length; i++) expect(ids[i]).not.toBe(ids[i - 1]);
       }
     }
@@ -144,5 +144,74 @@ describe('checkWordBank', () => {
     const s = units[0].sentences[0];
     expect(checkWordBank(s, ['I', 'like', 'a0'])).toBe(true);
     expect(checkWordBank(s, ['like', 'I', 'a0'])).toBe(false);
+  });
+});
+
+const phraseUnits = buildUnits([
+  {
+    id: 'ph',
+    kind: 'phrases',
+    title: 'P',
+    emoji: 'P',
+    items: [
+      { id: 'p0', en: 'Can I go to the bathroom?', he: 'x0', emoji: '🚻' },
+      { id: 'p1', en: "I don't understand", he: 'x1', emoji: '🤔' },
+      { id: 'p2', en: 'Slowly, please', he: 'x2', emoji: '🐢' },
+      { id: 'p3', en: 'I need help', he: 'x3', emoji: '🆘' },
+      { id: 'p4', en: 'Me too!', he: 'x4', emoji: '🙌' },
+    ],
+  },
+  ...units.map((u) => ({ ...u, items: u.items.map(({ unitId: _u, type: _t, ...i }) => i) })),
+]);
+
+describe('phrase units', () => {
+  it('use meaning exercises and build-the-phrase', () => {
+    const lesson = buildLesson(phraseUnits, emptyProgress(), NOW, seeded(5));
+    const kinds = new Set(lesson.map((e) => e.kind));
+    expect(kinds.has('en-to-he')).toBe(true);
+    expect(kinds.has('listen-meaning')).toBe(true);
+    expect(kinds.has('pick-picture')).toBe(false);
+    expect(kindForBox(3, 'phrase')).toBe('word-bank');
+  });
+  it('phrase tiles have no punctuation and include the whole phrase', () => {
+    const p = withItems({ p0: 3, p1: 3, p2: 3, p3: 3 });
+    const wb = buildLesson(phraseUnits, p, NOW, seeded(2)).filter((e) => e.kind === 'word-bank');
+    expect(wb.length).toBeGreaterThan(0);
+    for (const e of wb) {
+      if (e.kind !== 'word-bank') continue;
+      expect(e.tiles.some((t) => /[?!,.]/.test(t))).toBe(false);
+      const target = phraseUnits[0].items.find((i) => i.id === e.targetId)!;
+      const words = target.en.replace(/[?!,.]/g, '').split(' ');
+      expect(checkWordBank(target, words)).toBe(true);
+      for (const w of words) expect(e.tiles).toContain(w);
+    }
+  });
+});
+
+describe('jump ahead', () => {
+  it('builds a test from the target unit only', () => {
+    const t = buildJumpTest(units, 'b', seeded(4));
+    expect(t).toHaveLength(8);
+    for (const e of t) if ('itemId' in e) expect(e.itemId.startsWith('b')).toBe(true);
+  });
+  it('passing unlocks the unit and everything before it', () => {
+    const p = markKnown(emptyProgress(), itemsUpTo(units, 'b'), NOW);
+    const st = unitStatuses(units, p);
+    expect(st.every((s) => s.unlocked && s.complete)).toBe(true);
+    expect(p.items.b0.due).toBeGreaterThan(NOW);
+  });
+  it('test answers do not change memory state, and test lessons do not affect pacing', () => {
+    let p = recordAnswer(emptyProgress(), { itemId: 'b0', kind: 'he-to-en', skill: 'recall', correct: true, retry: false, test: true, ms: 1, ts: NOW });
+    expect(p.items.b0).toBeUndefined();
+    expect(unitStatuses(units, p)[1].unlocked).toBe(false);
+    p = finishLesson(p, { startedAt: NOW, firstTryCorrect: 1, total: 8 }, NOW, true);
+    expect(newWordCount(p)).toBe(3);
+  });
+  it('a started unit stays unlocked even if earlier words slip', () => {
+    const boxes: Record<string, number> = Object.fromEntries(mkItems('a', 10).map((i) => [i.id, 2]));
+    boxes.b0 = 1;
+    expect(unitStatuses(units, withItems(boxes))[1].unlocked).toBe(true);
+    for (const k of [0, 1, 2, 3, 4]) boxes[`a${k}`] = 0;
+    expect(unitStatuses(units, withItems(boxes))[1].unlocked).toBe(true);
   });
 });

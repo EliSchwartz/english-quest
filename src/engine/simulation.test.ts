@@ -22,7 +22,7 @@ describe('simulated learner (2 lessons/day, 90% correct)', () => {
         for (const e of lesson) {
           const correct = rand() < 0.9;
           ok += correct ? 1 : 0;
-          const ids = e.kind === 'match-pairs' ? e.itemIds : [e.kind === 'word-bank' ? e.sentenceId : e.itemId];
+          const ids = e.kind === 'match-pairs' ? e.itemIds : [e.kind === 'word-bank' ? e.targetId : e.itemId];
           for (const id of ids) p = recordAnswer(p, { itemId: id, kind: e.kind, skill: SKILL_OF[e.kind], correct, retry: false, ms: 1, ts: now });
         }
         p = finishLesson(p, { startedAt: now, firstTryCorrect: ok, total: lesson.length }, now);

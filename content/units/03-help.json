@@ -1,0 +1,20 @@
+{
+  "id": "help",
+  "kind": "phrases",
+  "title": "אני צריכה עזרה",
+  "emoji": "🙋‍♀️",
+  "items": [
+    { "id": "p-bathroom", "en": "Can I go to the bathroom?", "he": "אפשר ללכת לשירותים?", "emoji": "🚻" },
+    { "id": "p-dont-understand", "en": "I don't understand", "he": "אני לא מבינה", "emoji": "🤔" },
+    { "id": "p-say-again", "en": "Can you say it again?", "he": "אפשר להגיד את זה שוב?", "emoji": "🔁" },
+    { "id": "p-slowly", "en": "Slowly, please", "he": "לאט, בבקשה", "emoji": "🐢" },
+    { "id": "p-need-help", "en": "I need help", "he": "אני צריכה עזרה", "emoji": "🆘" },
+    { "id": "p-what-mean", "en": "What does it mean?", "he": "מה זה אומר?", "emoji": "❓" },
+    { "id": "p-water-please", "en": "Can I drink some water?", "he": "אפשר לשתות מים?", "emoji": "💧" },
+    { "id": "p-dont-feel-good", "en": "I don't feel good", "he": "אני לא מרגישה טוב", "emoji": "🤒" },
+    { "id": "p-where-class", "en": "Where is my class?", "he": "איפה הכיתה שלי?", "emoji": "🏫" },
+    { "id": "p-borrow-pencil", "en": "Can I borrow a pencil?", "he": "אפשר לשאול עיפרון?", "emoji": "✏️" },
+    { "id": "p-im-sorry", "en": "I'm sorry", "he": "אני מצטערת", "emoji": "😔" },
+    { "id": "p-excuse-me", "en": "Excuse me", "he": "סליחה", "emoji": "🙋‍♀️" }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "id": "friends",
+  "kind": "phrases",
+  "title": "חברים בהפסקה",
+  "emoji": "🤸‍♀️",
+  "items": [
+    { "id": "p-want-to-play", "en": "Do you want to play?", "he": "רוצה לשחק?", "emoji": "⚽" },
+    { "id": "p-can-i-play", "en": "Can I play too?", "he": "אפשר לשחק גם?", "emoji": "🙋‍♀️" },
+    { "id": "p-my-turn", "en": "It's my turn", "he": "תורי", "emoji": "☝️" },
+    { "id": "p-your-turn", "en": "It's your turn", "he": "תורך", "emoji": "👉" },
+    { "id": "p-wait-for-me", "en": "Wait for me!", "he": "חכו לי!", "emoji": "✋" },
+    { "id": "p-play-tag", "en": "Let's play tag!", "he": "בואו נשחק תופסת!", "emoji": "🏃‍♀️" },
+    { "id": "p-me-too", "en": "Me too!", "he": "גם אני!", "emoji": "🙌" },
+    { "id": "p-so-cool", "en": "That's so cool!", "he": "זה ממש מגניב!", "emoji": "😎" },
+    { "id": "p-like-shirt", "en": "I like your shirt", "he": "החולצה שלך יפה", "emoji": "👕" },
+    { "id": "p-be-friends", "en": "Do you want to be friends?", "he": "רוצה שנהיה חברות?", "emoji": "💖" },
+    { "id": "p-come-with-me", "en": "Come with me!", "he": "בואו איתי!", "emoji": "🫱" },
+    { "id": "p-favorite-game", "en": "What's your favorite game?", "he": "מה המשחק האהוב עליך?", "emoji": "🎲" }
+  ]
+}

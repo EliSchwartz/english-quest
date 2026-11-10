@@ -1,10 +1,10 @@
-import type { Sentence, WordBankExercise } from '../../engine/types';
+import type { WordBankExercise } from '../../engine/types';
 import { speak } from '../../lib/speech';
 import { sounds } from '../../lib/sounds';
 
 interface Props {
   ex: WordBankExercise;
-  sentence: Sentence;
+  sentence: { en: string; he: string; emoji: string };
   chosen: number[]; // indices into ex.tiles
   locked: boolean;
   onChange: (chosen: number[]) => void;

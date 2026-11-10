@@ -1,0 +1,20 @@
+{
+  "id": "hello",
+  "kind": "phrases",
+  "title": "נעים להכיר",
+  "emoji": "👋",
+  "items": [
+    { "id": "p-hi", "en": "Hi!", "he": "היי!", "emoji": "👋" },
+    { "id": "p-good-morning", "en": "Good morning!", "he": "בוקר טוב!", "emoji": "🌅" },
+    { "id": "p-whats-your-name", "en": "What's your name?", "he": "מה השם שלך?", "emoji": "❓" },
+    { "id": "p-nice-to-meet-you", "en": "Nice to meet you!", "he": "נעים מאוד!", "emoji": "🤝" },
+    { "id": "p-how-are-you", "en": "How are you?", "he": "מה שלומך?", "emoji": "🙂" },
+    { "id": "p-im-good", "en": "I'm good, thank you!", "he": "אני בסדר, תודה!", "emoji": "😊" },
+    { "id": "p-im-nine", "en": "I am nine years old", "he": "אני בת תשע", "emoji": "9️⃣" },
+    { "id": "p-from-israel", "en": "I am from Israel", "he": "אני מישראל", "emoji": "🇮🇱" },
+    { "id": "p-speak-hebrew", "en": "I speak Hebrew", "he": "אני מדברת עברית", "emoji": "🗣️" },
+    { "id": "p-new-here", "en": "I am new here", "he": "אני חדשה פה", "emoji": "🆕" },
+    { "id": "p-thank-you", "en": "Thank you!", "he": "תודה!", "emoji": "🙏" },
+    { "id": "p-see-you-tomorrow", "en": "See you tomorrow!", "he": "נתראה מחר!", "emoji": "👋" }
+  ]
+}

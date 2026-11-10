@@ -1,0 +1,20 @@
+{
+  "id": "lunch",
+  "kind": "phrases",
+  "title": "ארוחת צהריים",
+  "emoji": "🥪",
+  "items": [
+    { "id": "p-sit-here", "en": "Can I sit here?", "he": "אפשר לשבת כאן?", "emoji": "🪑" },
+    { "id": "p-sit-together", "en": "Let's sit together", "he": "בואו נשב ביחד", "emoji": "👭" },
+    { "id": "p-what-for-lunch", "en": "What do you have for lunch?", "he": "מה יש לך לצהריים?", "emoji": "🍱" },
+    { "id": "p-have-sandwich", "en": "I have a sandwich", "he": "יש לי כריך", "emoji": "🥪" },
+    { "id": "p-want-some", "en": "Do you want some?", "he": "רוצה קצת?", "emoji": "🍪" },
+    { "id": "p-yummy", "en": "It's yummy!", "he": "זה טעים!", "emoji": "😋" },
+    { "id": "p-dont-like-it", "en": "I don't like it", "he": "אני לא אוהבת את זה", "emoji": "🙅‍♀️" },
+    { "id": "p-hungry", "en": "I'm hungry", "he": "אני רעבה", "emoji": "🍽️" },
+    { "id": "p-thirsty", "en": "I'm thirsty", "he": "אני צמאה", "emoji": "🥤" },
+    { "id": "p-full", "en": "I'm full", "he": "אני שבעה", "emoji": "😌" },
+    { "id": "p-more-please", "en": "Can I have more, please?", "he": "אפשר עוד, בבקשה?", "emoji": "➕" },
+    { "id": "p-open-this", "en": "Can you open this?", "he": "אפשר לפתוח לי את זה?", "emoji": "🥫" }
+  ]
+}

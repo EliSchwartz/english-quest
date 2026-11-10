@@ -16,6 +16,8 @@ export interface AnswerEvent {
   skill: Skill;
   correct: boolean;
   retry: boolean;
+  /** Answer given in a jump-ahead test: logged, but doesn't change memory state. */
+  test?: boolean;
   ms: number;
   ts: number;
 }
@@ -25,6 +27,7 @@ export interface LessonRecord {
   finishedAt: number;
   xp: number;
   accuracy: number;
+  test?: boolean;
 }
 
 export interface Progress {
@@ -65,7 +68,7 @@ export function applyAnswer(prev: ItemState | undefined, correct: boolean, now: 
 }
 
 export function recordAnswer(p: Progress, e: AnswerEvent): Progress {
-  const items = e.retry ? p.items : { ...p.items, [e.itemId]: applyAnswer(p.items[e.itemId], e.correct, e.ts) };
+  const items = e.retry || e.test ? p.items : { ...p.items, [e.itemId]: applyAnswer(p.items[e.itemId], e.correct, e.ts) };
   return { ...p, items, events: [...p.events, e] };
 }
 
@@ -99,7 +102,7 @@ export function lessonRewards(r: LessonResult) {
   };
 }
 
-export function finishLesson(p: Progress, r: LessonResult, now: number): Progress {
+export function finishLesson(p: Progress, r: LessonResult, now: number, test = false): Progress {
   const { xp, gems, accuracy } = lessonRewards(r);
   const today = dayKey(now);
   let streak = p.streak;
@@ -110,7 +113,7 @@ export function finishLesson(p: Progress, r: LessonResult, now: number): Progres
     gems: p.gems + gems,
     streak,
     lastActiveDay: today,
-    lessons: [...p.lessons, { startedAt: r.startedAt, finishedAt: now, xp, accuracy }],
+    lessons: [...p.lessons, { startedAt: r.startedAt, finishedAt: now, xp, accuracy, ...(test ? { test } : {}) }],
   };
 }
 
@@ -123,4 +126,22 @@ export function currentStreak(p: Progress, now: number): number {
 export function lessonsToday(p: Progress, now: number): number {
   const today = dayKey(now);
   return p.lessons.filter((l) => dayKey(l.finishedAt) === today).length;
+}
+
+/** Items she proved she knows in a jump test: treat as learned, with a review in 2 days. */
+export function markKnown(p: Progress, itemIds: string[], now: number): Progress {
+  const items = { ...p.items };
+  for (const id of itemIds) {
+    const s = items[id];
+    if (s && s.box >= 2) continue;
+    items[id] = {
+      box: 2,
+      due: now + INTERVAL_DAYS[2] * DAY,
+      seen: (s?.seen ?? 0) + 1,
+      correct: (s?.correct ?? 0) + 1,
+      wrong: s?.wrong ?? 0,
+      lastSeen: now,
+    };
+  }
+  return { ...p, items };
 }

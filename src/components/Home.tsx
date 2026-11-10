@@ -1,14 +1,18 @@
+import { useState } from 'react';
 import { unitStatuses, currentUnit } from '../engine/lessonBuilder';
 import { DAILY_GOAL, currentStreak, lessonsToday, type Progress } from '../engine/progress';
 import type { Unit } from '../engine/types';
+import { JumpSheet } from './JumpSheet';
 
 interface Props {
   units: Unit[];
   progress: Progress;
   onStart: () => void;
+  onJump: (unitId: string) => void;
 }
 
-export function Home({ units, progress, onStart }: Props) {
+export function Home({ units, progress, onStart, onJump }: Props) {
+  const [jumpTo, setJumpTo] = useState<Unit | null>(null);
   const now = Date.now();
   const statuses = unitStatuses(units, progress);
   const cur = currentUnit(statuses);
@@ -37,13 +41,12 @@ export function Home({ units, progress, onStart }: Props) {
       <section className="path">
         {statuses.map((s, i) => {
           const isCur = s.unit.id === cur.unit.id;
-          const state = !s.unlocked ? 'locked' : s.complete && !isCur ? 'complete' : 'current';
+          const state = !s.unlocked ? 'locked' : s.complete && !isCur ? 'complete' : isCur ? 'current' : 'open';
           return (
             <div key={s.unit.id} className={`node-wrap ${i % 2 ? 'right' : 'left'}`}>
               <button
                 className={`node ${state}`}
-                disabled={!isCur}
-                onClick={onStart}
+                onClick={() => (state === 'locked' ? setJumpTo(s.unit) : onStart())}
                 style={{ ['--p' as string]: `${Math.round(s.mastered * 100)}%` }}
                 aria-label={s.unit.title}
               >
@@ -53,10 +56,26 @@ export function Home({ units, progress, onStart }: Props) {
                 {s.unit.title}
                 {s.unlocked && <span className="node-pct"> · {Math.round(s.mastered * 100)}%</span>}
               </div>
+              {state === 'locked' && (
+                <button className="jump-chip" onClick={() => setJumpTo(s.unit)}>
+                  ⚡ קפיצה
+                </button>
+              )}
             </div>
           );
         })}
       </section>
+
+      {jumpTo && (
+        <JumpSheet
+          unit={jumpTo}
+          onClose={() => setJumpTo(null)}
+          onStart={() => {
+            setJumpTo(null);
+            onJump(jumpTo.id);
+          }}
+        />
+      )}
 
       <footer className="home-footer">
         <button className="btn btn-green wide big" onClick={onStart}>

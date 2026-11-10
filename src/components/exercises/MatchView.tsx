@@ -74,7 +74,11 @@ export function MatchView({ ex, items, onComplete }: Props) {
                 attempt(word, id);
               }}
             >
-              <span className="emoji-option small">{items.get(id)!.emoji}</span>
+              {items.get(id)!.type === 'phrase' ? (
+                <span className="he">{items.get(id)!.he}</span>
+              ) : (
+                <span className="emoji-option small">{items.get(id)!.emoji}</span>
+              )}
             </button>
           ))}
         </div>
